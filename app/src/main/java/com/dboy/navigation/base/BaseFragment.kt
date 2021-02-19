@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import java.lang.reflect.ParameterizedType
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  *   @author DBoy
@@ -43,7 +44,8 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container, false)
+        val rootView = inflater.inflate(layoutId, container, false)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,6 +53,7 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
         Log.d(TAG_LIFE, "${javaClass.simpleName} onViewCreated")
         initViewAndData(view)
         initLiveData()
+//        postponeEnterTransition(100,TimeUnit.MILLISECONDS)
     }
 
     abstract fun initViewAndData(view: View)
@@ -103,16 +106,15 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
     }
 
 
-
-
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter) {
             if (nextAnim > 0) {
                 val animation = AnimationUtils.loadAnimation(requireActivity(), nextAnim)
                 //延迟100毫秒执行让View有一个初始化的时间，防止初始化时刷新页面与动画刷新冲突造成卡顿
                 animation.startOffset = 100
-                animation.setAnimationListener(object : Animation.AnimationListener{
+                animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {
+                        Log.d(TAG, "onAnimationStart: ")
                     }
 
                     override fun onAnimationEnd(animation: Animation?) {
@@ -141,7 +143,7 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
 
 
     fun onEnterAnimEnd(){
-
+        Log.d(TAG, "onEnterAnimEnd: ")
     }
 
 }

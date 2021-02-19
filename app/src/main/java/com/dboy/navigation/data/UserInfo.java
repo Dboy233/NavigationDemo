@@ -15,6 +15,13 @@ public class UserInfo {
         this.userName = userName;
         this.userSex = userSex;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userName='" + userName + '\'' +
+                '}';
+    }
 }
 
 

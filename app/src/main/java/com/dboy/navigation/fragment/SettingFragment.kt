@@ -20,7 +20,7 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
         get() = R.layout.fragment_setting
 
     override fun initViewAndData(view: View) {
-        go_back_to_home.setOnClickListener {
+        view.findViewById<View>(R.id.go_back_to_home).setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
         view.findViewById<Button>(R.id.set_data).setOnClickListener {

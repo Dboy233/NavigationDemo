@@ -23,7 +23,7 @@ class DataTestModel {
         val userInfos: MutableList<UserInfo> = mutableListOf()
         //不需要的数据
         userInfos.add(UserInfo("未知", "不男不女"))
-        for (i in 0..30) {
+        for (i in 0..100) {
             userInfos.add(UserInfo("用户$i", if (i % 2 == 0) "男" else "女"))
         }
         //不需要的数据

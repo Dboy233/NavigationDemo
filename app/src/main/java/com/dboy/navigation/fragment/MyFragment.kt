@@ -2,14 +2,15 @@ package com.dboy.navigation.fragment
 
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.dboy.navigation.R
 import com.dboy.navigation.adapter.UserInfoAdapter
 import com.dboy.navigation.base.BaseFragment
 import com.dboy.navigation.fragment.viewmodel.MyViewModel
 import com.dboy.navigation.livedata.LiveDataStatus.*
-import kotlinx.android.synthetic.main.fragment_my.*
 
 /**
  *   @author DBoy
@@ -18,7 +19,8 @@ import kotlinx.android.synthetic.main.fragment_my.*
  */
 class MyFragment : BaseFragment<MyViewModel>() {
 
-    lateinit var adapter: UserInfoAdapter
+      val adapter: UserInfoAdapter =UserInfoAdapter(R.layout.item_user_info_layout)
+
 
     override val layoutId: Int
         get() = R.layout.fragment_my
@@ -30,16 +32,20 @@ class MyFragment : BaseFragment<MyViewModel>() {
             Toast.makeText(context, "Arguments: $this", Toast.LENGTH_SHORT).show()
         }
         //进入设置页面点击事件
-        next_pager_btn.setOnClickListener {
+        view.findViewById<View>(R.id.next_pager_btn).setOnClickListener {
             findNavController().navigate(MyFragmentDirections.actionMyFragmentToSettingFragment())
         }
         //刷新数据点击事件
-        refresh_data_btn.setOnClickListener {
+        view.findViewById<View>(R.id.refresh_data_btn).setOnClickListener {
             viewModel.initUserInfo()
         }
         //初始化列表 layoutManager写在了布局中
-        adapter = UserInfoAdapter(R.layout.item_user_info_layout)
-        user_info_rv.adapter = adapter
+        val recyclerView = view.findViewById<RecyclerView>(R.id.user_info_rv)
+        recyclerView.adapter = adapter
+        recyclerView.viewTreeObserver.addOnPreDrawListener {
+            Log.d(TAG, "viewTreeObserver: RecyclerView ")
+            true
+        }
     }
 
     override fun initLiveData() {
