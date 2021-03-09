@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.view.OneShotPreDrawListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import java.lang.reflect.ParameterizedType
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  *   @author DBoy
@@ -34,7 +34,7 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
     /**
      * 生命周期Tag
      */
-     val  TAG_LIFE = "FragmentLife"
+    val TAG_LIFE = "FragmentLife"
 
     abstract val layoutId: Int
 
@@ -50,10 +50,19 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG_LIFE, "${javaClass.simpleName} onViewCreated")
+        postponeEnterTransition()
         initViewAndData(view)
         initLiveData()
-//        postponeEnterTransition(100,TimeUnit.MILLISECONDS)
+        //方法1  扩展函数doOnPreDraw
+//        (view.parent as? ViewGroup)?.doOnPreDraw {
+//            startPostponedEnterTransition()
+//        }
+        //方法2 doOnPreDraw = OneShotPreDrawListener.add()
+        (view.parent as? ViewGroup)?.apply {
+            OneShotPreDrawListener.add(this) {
+                startPostponedEnterTransition()
+            }
+        }
     }
 
     abstract fun initViewAndData(view: View)
@@ -110,11 +119,8 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
         if (enter) {
             if (nextAnim > 0) {
                 val animation = AnimationUtils.loadAnimation(requireActivity(), nextAnim)
-                //延迟100毫秒执行让View有一个初始化的时间，防止初始化时刷新页面与动画刷新冲突造成卡顿
-                animation.startOffset = 100
                 animation.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {
-                        Log.d(TAG, "onAnimationStart: ")
                     }
 
                     override fun onAnimationEnd(animation: Animation?) {
@@ -131,18 +137,13 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
             }
         } else {
             if (nextAnim > 0) {
-                val animation = AnimationUtils.loadAnimation(requireActivity(), nextAnim)
-                //延迟100毫秒执行让View有一个初始化的时间，防止初始化时刷新页面与动画刷新冲突造成卡顿
-                animation.startOffset = 100
-                return animation
+                return AnimationUtils.loadAnimation(requireActivity(), nextAnim)
             }
         }
         return super.onCreateAnimation(transit, enter, nextAnim)
     }
 
-
-
-    fun onEnterAnimEnd(){
+    fun onEnterAnimEnd() {
         Log.d(TAG, "onEnterAnimEnd: ")
     }
 

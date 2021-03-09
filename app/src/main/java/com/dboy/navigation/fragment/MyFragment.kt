@@ -42,10 +42,6 @@ class MyFragment : BaseFragment<MyViewModel>() {
         //初始化列表 layoutManager写在了布局中
         val recyclerView = view.findViewById<RecyclerView>(R.id.user_info_rv)
         recyclerView.adapter = adapter
-        recyclerView.viewTreeObserver.addOnPreDrawListener {
-            Log.d(TAG, "viewTreeObserver: RecyclerView ")
-            true
-        }
     }
 
     override fun initLiveData() {
