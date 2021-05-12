@@ -3,6 +3,7 @@ package com.dboy.navigation.livedata;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -119,6 +120,27 @@ public class MutableLiveDataStatus<T> extends MutableLiveData<T> {
     }
 
     /**
+     * 在fragment中要使用ViewLifecycleOwner
+     */
+    public void observe(@NonNull Fragment fragment, @NonNull Observer<? super T> observer, @NonNull Observer<LiveDataStatus> observerStatus) {
+        this.observe(fragment.getViewLifecycleOwner(), observer, observerStatus);
+    }
+
+    /**
+     * 在fragment中要使用ViewLifecycleOwner
+     */
+    public void observe(@NonNull Fragment fragment, @NonNull Observer<? super T> observer) {
+        this.observe(fragment.getViewLifecycleOwner(), observer);
+    }
+
+    /**
+     * 在fragment中要使用ViewLifecycleOwner
+     */
+    public void observeStatus(@NonNull Fragment fragment, @NonNull Observer<LiveDataStatus> observer) {
+        this.observeStatus(fragment.getViewLifecycleOwner(), observer);
+    }
+
+    /**
      * 数据状态观测
      *
      * @param owner          生命周期
@@ -138,7 +160,6 @@ public class MutableLiveDataStatus<T> extends MutableLiveData<T> {
      */
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
-        removeObservers(owner);
         super.observe(owner, observer);
     }
 
@@ -149,7 +170,6 @@ public class MutableLiveDataStatus<T> extends MutableLiveData<T> {
      * @param observer 状态改变
      */
     public void observeStatus(@NonNull LifecycleOwner owner, @NonNull Observer<LiveDataStatus> observer) {
-        mLiveDataStatus.removeObservers(owner);
         mLiveDataStatus.observe(owner, observer);
     }
 
