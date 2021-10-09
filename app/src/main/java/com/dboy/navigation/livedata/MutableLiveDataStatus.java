@@ -44,7 +44,7 @@ public class MutableLiveDataStatus<T> extends MutableLiveData<T> {
      */
     public MutableLiveDataStatus(T value, LiveDataStatus initStatus) {
         super(value);
-        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             changeStatus(initStatus);
         } else {
             postChangeStatus(initStatus);
@@ -72,29 +72,6 @@ public class MutableLiveDataStatus<T> extends MutableLiveData<T> {
         changeStatus(LiveDataStatus.SUCCESS.setMessage(msg));
         //状态恢复到完成状态
         changeStatus(LiveDataStatus.COMPLETE);
-    }
-
-    /**
-     * 子线程post数据
-     *
-     * @param value 数据 不可null
-     */
-    @Override
-    public void postValue(T value) {
-        postValue(value, LiveDataStatus.SUCCESS.getMessage());
-    }
-
-    /**
-     * 子线程post数据 同时设置状态消息信息
-     *
-     * @param value 数据 不可null
-     * @param msg   状态消息
-     */
-    public void postValue(T value, String msg) {
-        super.postValue(value);
-        postChangeStatus(LiveDataStatus.SUCCESS.setMessage(msg));
-        //状态恢复到完成状态
-        postChangeStatus(LiveDataStatus.COMPLETE);
     }
 
     /**
