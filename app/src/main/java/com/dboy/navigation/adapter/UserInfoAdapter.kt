@@ -13,7 +13,6 @@ import com.dboy.navigation.data.UserInfo
  */
 class UserInfoAdapter(layoutResId: Int) : BaseQuickAdapter<UserInfo, BaseViewHolder>(layoutResId) {
     override fun convert(holder: BaseViewHolder, item: UserInfo) {
-        Log.d("NavigationDemo", "item create: ${item.toString()}")
         holder.setText(R.id.item_user_name, item.userName)
             .setText(R.id.item_user_sex, item.userSex)
     }

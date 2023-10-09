@@ -2,8 +2,8 @@ package com.dboy.navigation.fragment
 
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dboy.navigation.R
@@ -19,8 +19,9 @@ import com.dboy.navigation.livedata.LiveDataStatus.*
  */
 class MyFragment : BaseFragment<MyViewModel>() {
 
-      val adapter: UserInfoAdapter =UserInfoAdapter(R.layout.item_user_info_layout)
+    private val adapter: UserInfoAdapter = UserInfoAdapter(R.layout.item_user_info_layout)
 
+    private val vm by viewModels<MyViewModel>()
 
     override val layoutId: Int
         get() = R.layout.fragment_my
@@ -45,11 +46,6 @@ class MyFragment : BaseFragment<MyViewModel>() {
     }
 
     override fun initLiveData() {
-//        viewModel.userInfoLiveData.observe(this,{
-//                 adapter.setNewInstance(it)
-//        },{
-//
-//        })
         viewModel.userInfoLiveData.observe(this) {
             Log.d(TAG, "initLiveData: onChange")
             adapter.setNewInstance(it)
@@ -65,6 +61,7 @@ class MyFragment : BaseFragment<MyViewModel>() {
                     Log.d(TAG, "数据请求 失败")
                     Toast.makeText(requireContext(), "数据请求失败", Toast.LENGTH_SHORT).show()
                 }
+
                 COMPLETE -> Log.d(TAG, "数据请求 完成")
                 RESET -> {
                     Log.d(TAG, "需要重置数据")

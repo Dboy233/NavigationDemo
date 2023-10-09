@@ -6,8 +6,8 @@ import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.dboy.navigation.R
 import com.dboy.navigation.base.BaseFragment
+import com.dboy.navigation.databinding.FragmentSettingBinding
 import com.dboy.navigation.fragment.viewmodel.SettingViewModel
-import kotlinx.android.synthetic.main.fragment_setting.*
 
 /**
  *   @author DBoy
@@ -18,6 +18,10 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_setting
+
+    val viewBinding by lazy {
+        FragmentSettingBinding.bind(requireView())
+    }
 
     override fun initViewAndData(view: View) {
         view.findViewById<View>(R.id.go_back_to_home).setOnClickListener {
@@ -31,7 +35,7 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
     override fun initLiveData() {
         viewModel.liveData.observe(this) {
             Log.d(TAG, "data change: $it")
-            textView.text = it
+            viewBinding.textView.text = it
         }
     }
 

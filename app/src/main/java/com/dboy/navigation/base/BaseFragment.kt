@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.OneShotPreDrawListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import com.dboy.navigation.utils.BindingReflex
+import com.dboy.navigation.utils.BindingReflexUtil
 
 /**
  *   @author DBoy
@@ -20,7 +20,7 @@ import com.dboy.navigation.utils.BindingReflex
 abstract class BaseFragment<VM : ViewModel> : Fragment() {
 
     protected val viewModel: VM by lazy {
-        BindingReflex.reflexViewModel(javaClass, this)
+        BindingReflexUtil.reflexViewModel(javaClass, this)
     }
 
     /**

@@ -3,11 +3,12 @@ package com.dboy.navigation.fragment
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dboy.navigation.R
 import com.dboy.navigation.base.BaseFragment
+import com.dboy.navigation.databinding.FragmentHomeBinding
 import com.dboy.navigation.fragment.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  *   @author DBoy
@@ -19,6 +20,9 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_home
 
+    val  viewBinding :FragmentHomeBinding by lazy {
+        FragmentHomeBinding.bind(requireView())
+    }
     override fun initViewAndData(view: View) {
 
         //其中一种跳转页面方式
@@ -29,7 +33,8 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             //插件会生成一个包装类，这个类里面记录了当前页面到下个页面（具体看名字）所携带的变量参数
             //如果当前fragment可能有多个子页面节点 在改类中会生成多个静态方法用于传递参数
             val actionHomeFragmentToMyFragment =
-                HomeFragmentDirections.actionHomeFragmentToMyFragment(name = "DBoy")
+                HomeFragmentDirections.actionHomeFragmentToMyFragment()
+            actionHomeFragmentToMyFragment.name = "Dboy"
             findNavController().navigate(actionHomeFragmentToMyFragment)
         }
 
@@ -42,7 +47,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override fun initLiveData() {
         viewModel.liveData.observe(this) {
             Log.d(TAG, "data change :  $it ")
-            textView.text = it
+            viewBinding.textView.text = it
         }
     }
 }
