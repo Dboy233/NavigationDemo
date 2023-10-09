@@ -21,7 +21,6 @@ class MyFragment : BaseFragment<MyViewModel>() {
 
     private val adapter: UserInfoAdapter = UserInfoAdapter(R.layout.item_user_info_layout)
 
-    private val vm by viewModels<MyViewModel>()
 
     override val layoutId: Int
         get() = R.layout.fragment_my

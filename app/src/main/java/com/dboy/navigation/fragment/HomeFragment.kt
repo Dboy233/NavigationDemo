@@ -20,11 +20,10 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_home
 
-    val  viewBinding :FragmentHomeBinding by lazy {
-        FragmentHomeBinding.bind(requireView())
-    }
-    override fun initViewAndData(view: View) {
+    lateinit var  viewBinding :FragmentHomeBinding
 
+    override fun initViewAndData(view: View) {
+        viewBinding =FragmentHomeBinding.bind(view)
         //其中一种跳转页面方式
 //        go_my_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.myFragment))
 

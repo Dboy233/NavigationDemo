@@ -3,6 +3,7 @@ package com.dboy.navigation.fragment
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.dboy.navigation.R
 import com.dboy.navigation.base.BaseFragment
@@ -19,17 +20,24 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
     override val layoutId: Int
         get() = R.layout.fragment_setting
 
-    val viewBinding by lazy {
-        FragmentSettingBinding.bind(requireView())
-    }
+    lateinit var viewBinding:FragmentSettingBinding
 
     override fun initViewAndData(view: View) {
-        view.findViewById<View>(R.id.go_back_to_home).setOnClickListener {
+        viewBinding=  FragmentSettingBinding.bind(view)
+
+        viewBinding.goBackToHome.setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
-        view.findViewById<Button>(R.id.set_data).setOnClickListener {
+        viewBinding.setData.setOnClickListener {
             viewModel.initInfo("щ(ʘ╻ʘ)щ")
         }
+        viewBinding.openSelf.setOnClickListener {
+            findNavController().navigate(R.id.action_settingFragment_global)
+        }
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
+
     }
 
     override fun initLiveData() {
@@ -38,6 +46,5 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
             viewBinding.textView.text = it
         }
     }
-
 
 }
