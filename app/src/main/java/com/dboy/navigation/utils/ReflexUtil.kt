@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 package com.dboy.navigation.utils
 
 import android.view.LayoutInflater
@@ -13,7 +15,7 @@ import java.lang.reflect.ParameterizedType
  * @author Dboy
  * @since 2021/8/17 14:23
  */
-object BindingReflexUtil {
+object ReflexUtil {
 
     /**
      * 反射获取ViewBinding
@@ -24,7 +26,7 @@ object BindingReflexUtil {
      * @return viewBinding实例
     </V> */
     fun <V : ViewBinding> reflexViewBinding(aClass: Class<*>, from: LayoutInflater?): V {
-        return try {
+        try {
             val type = aClass.genericSuperclass
             if (type is ParameterizedType) {
                 val actualTypeArguments = type.actualTypeArguments
@@ -56,8 +58,13 @@ object BindingReflexUtil {
      * @param b      attachToRoot
      * @return viewBinding实例
     </V> */
-    fun <V : ViewBinding> reflexViewBinding(aClass: Class<*>, from: LayoutInflater, viewGroup: ViewGroup?, b: Boolean): V {
-        return try {
+    fun <V : ViewBinding> reflexViewBinding(
+        aClass: Class<*>,
+        from: LayoutInflater,
+        viewGroup: ViewGroup?,
+        b: Boolean
+    ): V {
+        try {
             val type = aClass.genericSuperclass
             if (type is ParameterizedType) {
                 val actualTypeArguments = type.actualTypeArguments
@@ -68,7 +75,12 @@ object BindingReflexUtil {
                         continue
                     }
                     if (ViewBinding::class.java.isAssignableFrom(tClass)) {
-                        val inflate = tClass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.javaPrimitiveType)
+                        val inflate = tClass.getDeclaredMethod(
+                            "inflate",
+                            LayoutInflater::class.java,
+                            ViewGroup::class.java,
+                            Boolean::class.javaPrimitiveType
+                        )
                         return inflate.invoke(null, from, viewGroup, b) as V
                     }
                 }
@@ -90,8 +102,8 @@ object BindingReflexUtil {
      * @return ViewModel实例
     </VM> */
     fun <VM : ViewModel> reflexViewModel(aClass: Class<*>, owner: ViewModelStoreOwner): VM {
-        return try {
-            return ViewModelProvider(owner).get(reflectViewModelClass(aClass))
+        try {
+            return ViewModelProvider(owner)[reflectViewModelClass(aClass)]
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             throw java.lang.RuntimeException(e.message, e)
@@ -102,7 +114,7 @@ object BindingReflexUtil {
      * 获取Class中携带的具体泛型对象泛型具体类
      */
     fun <VM : ViewModel> reflectViewModelClass(aClass: Class<*>): Class<VM> {
-        return try {
+        try {
             val type = aClass.genericSuperclass
             if (type is ParameterizedType) {
                 val actualTypeArguments = type.actualTypeArguments

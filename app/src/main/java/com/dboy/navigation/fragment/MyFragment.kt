@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dboy.navigation.R
 import com.dboy.navigation.adapter.UserInfoAdapter
 import com.dboy.navigation.base.BaseFragment
+import com.dboy.navigation.databinding.FragmentMyBinding
 import com.dboy.navigation.fragment.viewmodel.MyViewModel
 import com.dboy.navigation.livedata.LiveDataStatus.*
 
@@ -17,13 +18,10 @@ import com.dboy.navigation.livedata.LiveDataStatus.*
  *   @date 2020/9/2
  *   Class 描述 :首页
  */
-class MyFragment : BaseFragment<MyViewModel>() {
+class MyFragment : MiddleFragment<MyViewModel,FragmentMyBinding>() {
 
     private val adapter: UserInfoAdapter = UserInfoAdapter(R.layout.item_user_info_layout)
 
-
-    override val layoutId: Int
-        get() = R.layout.fragment_my
 
     override fun initViewAndData(view: View) {
         //插件会生成 一个 fragment+Args字样的帮助类 通过它可以获取传递的Bundle值

@@ -1,11 +1,9 @@
 package com.dboy.navigation
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.dboy.navigation.base.BaseActivity
+import com.dboy.navigation.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+
+
 }

@@ -15,16 +15,9 @@ import com.dboy.navigation.fragment.viewmodel.SettingViewModel
  *   @date 2020/9/2
  *   Class 描述 :
  */
-class SettingFragment : BaseFragment<SettingViewModel>() {
-
-    override val layoutId: Int
-        get() = R.layout.fragment_setting
-
-    lateinit var viewBinding:FragmentSettingBinding
+class SettingFragment : BaseFragment<FragmentSettingBinding,SettingViewModel>() {
 
     override fun initViewAndData(view: View) {
-        viewBinding=  FragmentSettingBinding.bind(view)
-
         viewBinding.goBackToHome.setOnClickListener {
             findNavController().popBackStack(R.id.homeFragment, false)
         }
@@ -37,7 +30,6 @@ class SettingFragment : BaseFragment<SettingViewModel>() {
         requireActivity().onBackPressedDispatcher.addCallback {
             findNavController().popBackStack()
         }
-
     }
 
     override fun initLiveData() {

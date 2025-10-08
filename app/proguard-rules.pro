@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# 保留泛型签名（不要被擦除）
+
+-keep public interface androidx.viewbinding.ViewBinding
+-keep class * implements androidx.viewbinding.ViewBinding{
+    *;
+}
+
+#你的Activity继承的AppCompatActivity，就是AppCompatActivity
+-keep class androidx.appcompat.app.AppCompatActivity
+-keep class * extends androidx.appcompat.app.AppCompatActivity
+#不加也行，默认不混淆Fragment
+-keep class androidx.fragment.app.Fragment
+-keep class * extends androidx.fragment.app.Fragment

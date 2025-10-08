@@ -10,17 +10,23 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.OneShotPreDrawListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import com.dboy.navigation.utils.BindingReflexUtil
+import androidx.viewbinding.ViewBinding
+import com.dboy.navigation.fragment.viewmodel.BaseViewModel
+import com.dboy.navigation.utils.ReflexUtil
 
 /**
  *   @author DBoy
  *   @date 2020/9/2
  *   Class 描述 :
  */
-abstract class BaseFragment<VM : ViewModel> : Fragment() {
+abstract class BaseFragment<VB: ViewBinding,VM : BaseViewModel> : Fragment() {
 
     protected val viewModel: VM by lazy {
-        BindingReflexUtil.reflexViewModel(javaClass, this)
+        ReflexUtil.reflexViewModel(javaClass, this)
+    }
+
+    protected val viewBinding:VB by lazy {
+        ReflexUtil.reflexViewBinding(javaClass,layoutInflater)
     }
 
     /**
@@ -33,16 +39,12 @@ abstract class BaseFragment<VM : ViewModel> : Fragment() {
      */
     val TAG_LIFE = "FragmentLife"
 
-    abstract val layoutId: Int
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(layoutId, container, false)
-        return rootView
+        return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

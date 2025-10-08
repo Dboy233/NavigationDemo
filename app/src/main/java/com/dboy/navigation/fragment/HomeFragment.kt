@@ -15,20 +15,14 @@ import com.dboy.navigation.fragment.viewmodel.HomeViewModel
  *   @date 2020/9/2
  *   Class 描述 :首页
  */
-class HomeFragment : BaseFragment<HomeViewModel>() {
-
-    override val layoutId: Int
-        get() = R.layout.fragment_home
-
-    lateinit var  viewBinding :FragmentHomeBinding
+class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
 
     override fun initViewAndData(view: View) {
-        viewBinding =FragmentHomeBinding.bind(view)
         //其中一种跳转页面方式
 //        go_my_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.myFragment))
 
         //通过插件生成页面携参帮助类
-        view.findViewById<Button>(R.id.go_my_button).setOnClickListener {
+        viewBinding.goMyButton.setOnClickListener {
             //插件会生成一个包装类，这个类里面记录了当前页面到下个页面（具体看名字）所携带的变量参数
             //如果当前fragment可能有多个子页面节点 在改类中会生成多个静态方法用于传递参数
             val actionHomeFragmentToMyFragment =
@@ -38,7 +32,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         }
 
         //设置数据按钮
-        view.findViewById<Button>(R.id.set_data).setOnClickListener {
+        viewBinding.setData.setOnClickListener {
             viewModel.initInfo("（＞人＜；）")
         }
     }
